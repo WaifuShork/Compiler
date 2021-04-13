@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Compiler.Syntax.Expression
+namespace Compiler.CodeAnalysis.Syntax.Expression
 {
-    class ParenthesizedExpressionSyntax : ExpressionSyntax
+    internal sealed class ParenthesizedExpressionSyntax : ExpressionSyntax
     {
         public ParenthesizedExpressionSyntax(SyntaxToken openParenthesisToken, ExpressionSyntax expression, SyntaxToken closedParenthesisToken)
         {
             OpenParenthesisToken = openParenthesisToken;
             Expression = expression;
-            ClosedParenthesisToken = closedParenthesisToken; 
+            ClosedParenthesisToken = closedParenthesisToken;
         }
         public SyntaxToken OpenParenthesisToken { get; }
         public ExpressionSyntax Expression { get; }

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Compiler.Syntax.Expression
+namespace Compiler.CodeAnalysis.Syntax.Expression
 {
-    class Evaluator
+    internal class Evaluator
     {
         private readonly ExpressionSyntax _root;
         public Evaluator(ExpressionSyntax root)
@@ -14,22 +10,23 @@ namespace Compiler.Syntax.Expression
             _root = root;
         }
 
-        public long Evaluate()
+        public int Evaluate()
         {
             return EvaluateExpression(_root);
         }
+
         private int EvaluateExpression(ExpressionSyntax node)
         {
-            if(node is NumberExpressionSyntax n)
+            if (node is NumberExpressionSyntax n)
             {
                 return (int)n.NumberToken.Value;
             }
-            if(node is BinaryExpressionSyntax b)
+            if (node is BinaryExpressionSyntax b)
             {
                 var left = EvaluateExpression(b.Left);
                 var right = EvaluateExpression(b.Right);
 
-                switch(b.OperatorToken.Kind)
+                switch (b.OperatorToken.Kind)
                 {
                     case SyntaxKind.Plus:
                         return left + right;
@@ -40,22 +37,24 @@ namespace Compiler.Syntax.Expression
                     case SyntaxKind.Divide:
                         return left / right;
                     case SyntaxKind.Pow:
-                        long result = left;
-                        for(long i = 0; i < right; i++)
-                        {
-                            result *= right;
-                        }
-                        return (int)result;
+                        
+                        return (int)Math.Pow( (double) left, (double)right);
                     default:
-                        Console.Error.WriteLine($"Unexpected binary operator {b.OperatorToken.Kind}");
-                        return 1;
+                        // We can throw exceptions here because we've exhausted all options,
+                        // and this is an internal compiler error, should handle this more gracefully,
+                        // but during the development stage, and exception will provide more info,
+                        // on the stack trace :)
+                        throw new($"Unexpected binary operator {b.OperatorToken.Kind}");
                 }
             }
 
             if (node is ParenthesizedExpressionSyntax p)
+            {
                 return EvaluateExpression(p.Expression);
-            Console.Error.WriteLine($"Unexpected node {node.Kind}");
-            return 0;
+            }
+
+            // Same as above ^^ 
+            throw new($"Unexpected node {node.Kind}");
         }
     }
 }

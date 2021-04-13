@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Compiler.CodeAnalysis.Syntax.Expression;
 using System.Collections.Generic;
-using System.Linq;
-using Compiler.Lexing;
 
-namespace Compiler.Syntax.Expression
+namespace Compiler.CodeAnalysis.Syntax.Expression
 {
-    sealed class BinaryExpressionSyntax : ExpressionSyntax
+    internal sealed class BinaryExpressionSyntax : ExpressionSyntax
     {
         public BinaryExpressionSyntax(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
         {
@@ -18,12 +16,13 @@ namespace Compiler.Syntax.Expression
         public SyntaxToken OperatorToken { get; }
         public ExpressionSyntax Right { get; }
 
-        public override SyntaxKind Kind => SyntaxKind.BinaryExpression;  
+        public override SyntaxKind Kind => SyntaxKind.BinaryExpression;
+
         public override IEnumerable<SyntaxNode> GetChildren()
         {
             yield return Left;
             yield return OperatorToken;
             yield return Right;
-        } 
+        }
     }
 }
