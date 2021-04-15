@@ -1,6 +1,8 @@
 ﻿namespace Compiler.CodeAnalysis.Syntax.Expression
 {
-    internal abstract class ExpressionSyntax : SyntaxNode 
+    //This exists purely for the sake of using ExpressionSyntax for the multiple different types of
+    //Expression syntaxes
+    public abstract class ExpressionSyntax : SyntaxNode 
     {
     
     }
